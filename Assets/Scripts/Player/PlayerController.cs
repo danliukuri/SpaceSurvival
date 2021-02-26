@@ -4,19 +4,42 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float tilt;
+    [Header("Parameters")]
+    [SerializeField] float movementSpeed;
+    [SerializeField] float rotationSpeed;
 
-    Rigidbody rigidbody;
-    // Start is called before the first frame update
+    Camera mainCamera;
+    Vector3 mousePosition;
+    Vector3 targetPoint;
+
+    // Use this for initialization
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        mainCamera = Camera.main;
     }
 
-    private void FixedUpdate()
+    // Update is called once per frame
+    void Update()
     {
-        rigidbody.velocity = new Vector3(Input.GetAxis("Horizontal") * speed, 0f, Input.GetAxis("Vertical") * speed);
-        rigidbody.rotation = Quaternion.Euler(rigidbody.velocity.z * tilt, 0f, rigidbody.velocity.x * -tilt);
+        if (Input.GetMouseButton(1))
+        {
+            mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.y = 0f;
+            transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
+        }
+        ChangeRotationTarget();
+        Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    void ChangeRotationTarget()
+    {
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Plane playerPlane = new Plane(Vector3.up, transform.position);
+
+        float hitdist = 0.0f;
+
+        if (playerPlane.Raycast(ray, out hitdist))
+            targetPoint = ray.GetPoint(hitdist);
     }
 }
