@@ -13,7 +13,6 @@ public class ParticlesController : MonoBehaviour
     {
         previosRotation = transform.rotation;
     }
-
     void FixedUpdate()
     {
         if(Mathf.Abs(transform.rotation.eulerAngles.y - previosRotation.eulerAngles.y) > 10f)

@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float rotationSpeed;
 
     Camera mainCamera;
+    Rigidbody rgdbody;
     Vector3 mousePosition;
     Vector3 targetPoint;
 
@@ -16,8 +17,14 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+        rgdbody = GetComponent<Rigidbody>();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        rgdbody.isKinematic = true;
+        rgdbody.isKinematic = false;
+    }
     // Update is called once per frame
     void Update()
     {
