@@ -11,7 +11,7 @@ public class CopyPosition : MonoBehaviour
 	Camera mainCamera;
 	Vector3 mousePosition;
 	Vector3 offset;
-	Vector3 tmpDir;
+	float speedСontroller;
 
 	// Use this for initialization
 	void Start()
@@ -29,10 +29,8 @@ public class CopyPosition : MonoBehaviour
 		{
 			mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
 			mousePosition.y = 0f;
-			{
-				tmpDir = mousePosition - transform.position;
-				transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed * 1f / tmpDir.magnitude * Time.deltaTime);
-			}
+			speedСontroller = (mousePosition - transform.position).magnitude;
+			transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed / speedСontroller * Time.deltaTime);
 		}
 	}
 }

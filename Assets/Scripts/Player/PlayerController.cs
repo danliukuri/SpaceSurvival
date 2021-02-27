@@ -7,11 +7,15 @@ public class PlayerController : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] float movementSpeed;
     [SerializeField] float rotationSpeed;
+    [SerializeField] float maxTilt;
 
     Camera mainCamera;
     Rigidbody rgdbody;
+    Quaternion previosRotation;
     Vector3 mousePosition;
     Vector3 targetPoint;
+    float xRotationController;
+    float zRotationController;
 
     // Use this for initialization
     void Start()
@@ -28,14 +32,25 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ChangeRotationTarget();
+        Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+        
         if (Input.GetMouseButton(1))
         {
             mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.y = 0f;
             transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
+
+
+            xRotationController = (mousePosition - transform.position).magnitude / 10f;
+            zRotationController = ((Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f > 1f) ? 1f :
+                                    Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f);
+
+            targetRotation = Quaternion.Euler(maxTilt * xRotationController, targetRotation.eulerAngles.y,
+                (QuaternionExtensions.IsRightRotated(transform.rotation, previosRotation) ? maxTilt : -maxTilt) * zRotationController);
+
+            previosRotation = transform.rotation;
         }
-        ChangeRotationTarget();
-        Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
