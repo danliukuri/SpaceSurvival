@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     Camera mainCamera;
     Rigidbody rgdbody;
     Quaternion previosRotation;
+    Quaternion targetRotation;
     Vector3 mousePosition;
     Vector3 targetPoint;
     float xRotationController;
@@ -32,15 +33,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        mousePosition = Input.mousePosition;
+        mousePosition.z = Vector3.Dot(transform.position - mainCamera.transform.position, mainCamera.transform.forward);
         ChangeRotationTarget();
-        Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
-        
+        targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
+
         if (Input.GetMouseButton(1))
         {
-            mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
             mousePosition.y = 0f;
             transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
-
 
             xRotationController = (mousePosition - transform.position).magnitude / 10f;
             zRotationController = ((Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f > 1f) ? 1f :
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     void ChangeRotationTarget()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         Plane playerPlane = new Plane(Vector3.up, transform.position);
 
         float hitdist = 0.0f;

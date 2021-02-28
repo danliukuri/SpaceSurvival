@@ -19,7 +19,6 @@ public class CopyPosition : MonoBehaviour
 		mainCamera = Camera.main;
 		offset = transform.position;
 		Cursor.lockState = CursorLockMode.Confined;
-
 	}
 
 	// Update is called once per frame
@@ -27,8 +26,10 @@ public class CopyPosition : MonoBehaviour
 	{
 		if (Input.GetMouseButton(1) && target)
 		{
-			mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-			mousePosition.y = 0f;
+			mousePosition = Input.mousePosition;
+			mousePosition.z = Vector3.Dot(target.position - transform.position, transform.forward);
+			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
 			speedСontroller = (mousePosition - transform.position).magnitude;
 			transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed / speedСontroller * Time.deltaTime);
 		}
