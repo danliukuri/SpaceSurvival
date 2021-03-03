@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-            mousePosition.y = 0f;
+            mousePosition.y = transform.position.y;
             transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
 
             xRotationController = (mousePosition - transform.position).magnitude / 10f;
