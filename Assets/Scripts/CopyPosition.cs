@@ -5,9 +5,10 @@ using UnityEngine;
 public class CopyPosition : MonoBehaviour
 {
 	[Header("Parameters")]
-	[SerializeField] Transform target;
+	[SerializeField] Transform player;
 	[SerializeField] float speed;
 
+	PlayerController playerController;
 	Camera mainCamera;
 	Vector3 mousePosition;
 	Vector3 offset;
@@ -16,6 +17,7 @@ public class CopyPosition : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
+		playerController = player.GetComponent<PlayerController>();
 		mainCamera = Camera.main;
 		offset = transform.position;
 		Cursor.lockState = CursorLockMode.Confined;
@@ -24,14 +26,18 @@ public class CopyPosition : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetMouseButton(1) && target)
+		if (Input.GetMouseButton(1) && playerController.IsActive && player)
 		{
 			mousePosition = Input.mousePosition;
-			mousePosition.z = Vector3.Dot(target.position - transform.position, transform.forward);
+			mousePosition.z = Vector3.Dot(player.position - transform.position, transform.forward);
 			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
 			speedСontroller = (mousePosition - transform.position).magnitude;
 			transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed / speedСontroller * Time.deltaTime);
+		}
+		else if(!playerController.IsActive)
+        {
+			transform.position = Vector3.Lerp(transform.position, player.position + offset, speed / speedСontroller * Time.deltaTime);
 		}
 	}
 }

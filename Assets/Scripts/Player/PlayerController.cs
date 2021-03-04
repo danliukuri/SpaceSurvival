@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool IsActive { get; set; }
+
     [Header("Parameters")]
     [SerializeField] float movementSpeed;
     [SerializeField] float rotationSpeed;
@@ -38,7 +40,7 @@ public class PlayerController : MonoBehaviour
         ChangeRotationTarget();
         targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && IsActive)
         {
             mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
             mousePosition.y = transform.position.y;

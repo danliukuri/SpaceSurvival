@@ -9,19 +9,21 @@ public class BarrelSpawner : MonoBehaviour
     [SerializeField] float spawnCircleRadius;
     [SerializeField] float noSpawnCircleRadius;
     [SerializeField] int spawnCount;
+    [SerializeField] float spawnDelayDistance;
     Vector3 offset;
     Vector3 previousPlayerPosition;
     // Start is called before the first frame update
     void Start()
     {
         offset = new Vector3();
+        Spawn(spawnCount);
         previousPlayerPosition = player.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(player.position, previousPlayerPosition) > 10)
+        if (Vector3.Distance(player.position, previousPlayerPosition) > spawnDelayDistance)
         {
             Spawn(spawnCount);
             previousPlayerPosition = player.position;
