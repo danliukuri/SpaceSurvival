@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         rgdbody.isKinematic = false;
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         mousePosition = Input.mousePosition;
         mousePosition.z = Vector3.Dot(transform.position - mainCamera.transform.position, mainCamera.transform.forward);
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
         {
             mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
             mousePosition.y = transform.position.y;
-            transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
+            MoveTo(mousePosition);
 
             xRotationController = (mousePosition - transform.position).magnitude / 10f;
             zRotationController = ((Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f > 1f) ? 1f :
@@ -55,6 +55,15 @@ public class PlayerController : MonoBehaviour
 
             previosRotation = transform.rotation;
         }
+        RotateTo(targetRotation);
+    }
+
+    public void MoveTo(Vector3 targetPosition)
+    {
+        transform.position = Vector3.Lerp(transform.position, targetPosition, movementSpeed * Time.deltaTime);
+    }
+    public void RotateTo(Quaternion targetRotation)
+    {
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
