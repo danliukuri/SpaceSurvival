@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CopyPosition : MonoBehaviour
 {
+	#region Fields
 	[Header("Parameters")]
 	[SerializeField] Transform player;
 	[SerializeField] float speed;
@@ -13,7 +12,9 @@ public class CopyPosition : MonoBehaviour
 	Vector3 mousePosition;
 	Vector3 offset;
 	float speedСontroller;
+	#endregion
 
+	#region Methods
 	// Use this for initialization
 	void Start()
 	{
@@ -23,14 +24,6 @@ public class CopyPosition : MonoBehaviour
 		Cursor.lockState = CursorLockMode.Confined;
 	}
 
-    // Update is called once per frame
-    private void Update()
-    {
-		if (!playerController.IsActive)
-		{
-			transform.position = Vector3.Lerp(transform.position, player.position + offset, speed / speedСontroller * Time.deltaTime);
-		}
-	}
     void FixedUpdate()
 	{
 		if (Input.GetMouseButton(1) && playerController.IsActive && player)
@@ -42,5 +35,10 @@ public class CopyPosition : MonoBehaviour
 			speedСontroller = (mousePosition - transform.position).magnitude;
 			transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed / speedСontroller * Time.deltaTime);
 		}
+		else if (!playerController.IsActive)
+		{
+			transform.position = Vector3.Lerp(transform.position, player.position + offset, speed / speedСontroller * Time.deltaTime);
+		}
 	}
+    #endregion
 }

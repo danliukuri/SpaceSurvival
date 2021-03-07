@@ -1,22 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BarrelSpawner : MonoBehaviour
 {
+    #region Fields
+    [Header("Objects")]
     [SerializeField] Transform player;
     [SerializeField] GameObject barrelPrefab;
+    [Header("Spawn circle")]
     [SerializeField] float spawnCircleRadius;
     [SerializeField] float noSpawnCircleRadius;
-    [SerializeField] int spawnCount;
     [SerializeField] float spawnDelayDistance;
+    [Header("Spawn count")]
+    [SerializeField] int startSpawnCount;
+    [SerializeField] int spawnCountWhenPassingDistance;
+
     Vector3 offset;
     Vector3 previousPlayerPosition;
+    #endregion
+
+    #region Methods
     // Start is called before the first frame update
     void Start()
     {
         offset = new Vector3();
-        Spawn(spawnCount);
+        Spawn(startSpawnCount);
         previousPlayerPosition = player.position;
     }
 
@@ -25,7 +32,7 @@ public class BarrelSpawner : MonoBehaviour
     {
         if (Vector3.Distance(player.position, previousPlayerPosition) > spawnDelayDistance)
         {
-            Spawn(spawnCount);
+            Spawn(spawnCountWhenPassingDistance);
             previousPlayerPosition = player.position;
         }
     }
@@ -40,4 +47,5 @@ public class BarrelSpawner : MonoBehaviour
             Instantiate(barrelPrefab, player.position + offset, Random.rotation);
         }
     }
+    #endregion
 }
