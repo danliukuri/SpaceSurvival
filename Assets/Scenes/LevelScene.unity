@@ -14995,6 +14995,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df625ef9a0c3ea46b7c38edfa688a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyToUnloadResources: 32
+  keyToTakeOffFromBase: 32
+  keyToLandsOnTheBase: 32
+  playerOnBasePosition: {x: 0, y: -2.9, z: 0}
+  basePositionRadius: 3
 --- !u!1 &1411722769
 GameObject:
   m_ObjectHideFlags: 0

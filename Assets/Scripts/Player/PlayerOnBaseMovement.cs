@@ -3,15 +3,24 @@
 public class PlayerOnBaseMovement : MonoBehaviour
 {
     #region Fields
-    PlayerController playerController;
+    [Header("Keys")]
+    [SerializeField] KeyCode keyToUnloadResources;
+    [SerializeField] KeyCode keyToTakeOffFromBase;
+    [SerializeField] KeyCode keyToLandsOnTheBase;
+    [Header("Base position")]
+    [SerializeField] Vector3 playerOnBasePosition;
+    [SerializeField] float basePositionRadius;
 
-    Vector3 randomVector;
-    Vector3 playerOnBasePosition;
-    Vector3 targetPosition;
+    PlayerController playerController;
+    Timer timer = new Timer();
+
+    Vector3 randomVector = new Vector3();
+    Vector3 targetPosition = new Vector3();
 
     bool isLandsOnTheBase;
     bool isTakeOffFromBase;
     bool isPlayerOnTheBase;
+    bool areResourcesBeingUnloaded;
 
     float distanse;
     float playerSpeedController;
@@ -23,20 +32,21 @@ public class PlayerOnBaseMovement : MonoBehaviour
     void Start()
     {
         playerController = GetComponent<PlayerController>();
-
         playerDefaultYPosition = transform.position.y;
-        playerOnBasePosition = new Vector3(0f, -2.9f, 0f);
-        targetPosition = new Vector3();
-        randomVector = new Vector3();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
-        if (!isPlayerOnTheBase && Input.GetKeyDown(KeyCode.Space) && IsPlayerOnTheBasePosition())
+        if (!isPlayerOnTheBase && Input.GetKeyDown(keyToLandsOnTheBase) && IsPlayerOnTheBasePosition())
             StartLandsOnTheBase();
-        else if (isPlayerOnTheBase && Input.GetKeyDown(KeyCode.Space))
+        else if (!areResourcesBeingUnloaded && isPlayerOnTheBase)
+            UnloadResources();
+        else if (areResourcesBeingUnloaded && Input.GetKeyDown(keyToTakeOffFromBase))
+        {
+            areResourcesBeingUnloaded = false;
             StartTakeOffFromBase();
+        }
     }
     private void FixedUpdate()
     {
@@ -67,6 +77,24 @@ public class PlayerOnBaseMovement : MonoBehaviour
         }
     }
 
+    void UnloadResources()
+    {
+        if (Input.GetKeyDown(keyToUnloadResources))
+            timer.Run(3f);
+        else if (Input.GetKey(keyToUnloadResources))
+        {
+            timer.Update();
+            if (timer.Finished)
+            {
+                Debug.Log("isUnloaded");
+                areResourcesBeingUnloaded = true;
+                timer.Reset();
+            }
+        }
+        else if (Input.GetKeyUp(keyToUnloadResources))
+            timer.Reset();
+    }
+
     void StartTakeOffFromBase()
     {
         isTakeOffFromBase = true;
@@ -91,6 +119,6 @@ public class PlayerOnBaseMovement : MonoBehaviour
         }
     }
 
-    bool IsPlayerOnTheBasePosition() => Mathf.Abs(transform.position.x) < 3f && Mathf.Abs(transform.position.z) < 3f;
+    bool IsPlayerOnTheBasePosition() => Mathf.Abs(transform.position.x) < basePositionRadius && Mathf.Abs(transform.position.z) < basePositionRadius;
     #endregion
 }
