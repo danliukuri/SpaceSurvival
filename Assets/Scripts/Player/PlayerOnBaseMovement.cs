@@ -12,6 +12,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     [SerializeField] float basePositionRadius;
 
     PlayerController playerController;
+    ParticlesController playerParticlesController;
     Timer timer = new Timer();
 
     Vector3 randomVector = new Vector3();
@@ -32,6 +33,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     void Start()
     {
         playerController = GetComponent<PlayerController>();
+        playerParticlesController = GetComponent<ParticlesController>();
         playerDefaultYPosition = transform.position.y;
     }
     
@@ -48,7 +50,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
             StartTakeOffFromBase();
         }
     }
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (isLandsOnTheBase)
             LandsOnTheBaseUpdate();
@@ -71,10 +73,12 @@ public class PlayerOnBaseMovement : MonoBehaviour
             Quaternion.Euler(0f, 90f, 0f), (playerSpeedController + 2f) / playerSpeedController * Time.deltaTime);
 
         if (transform.position.y <= playerOnBasePosition.y)
-        {
-            isPlayerOnTheBase = true;
-            isLandsOnTheBase = false;
-        }
+            FinishLandsOnTheBase();
+    }
+    void FinishLandsOnTheBase()
+    {
+        isPlayerOnTheBase = true;
+        isLandsOnTheBase = false;  
     }
 
     void UnloadResources()
@@ -112,11 +116,13 @@ public class PlayerOnBaseMovement : MonoBehaviour
             Quaternion.Euler(0f, randomVector.y, 0f), playerSpeedController / (playerSpeedController - 0.5f) * Time.deltaTime);
 
         if (transform.position.y >= playerDefaultYPosition)
-        {
-            isPlayerOnTheBase = false;
-            isTakeOffFromBase = false;
-            playerController.IsActive = true;
-        }
+            FinishTakeOffFromBase();
+    }
+    void FinishTakeOffFromBase()
+    {
+        isPlayerOnTheBase = false;
+        isTakeOffFromBase = false;
+        playerController.IsActive = true;
     }
 
     bool IsPlayerOnTheBasePosition() => Mathf.Abs(transform.position.x) < basePositionRadius && Mathf.Abs(transform.position.z) < basePositionRadius;
