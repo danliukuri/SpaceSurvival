@@ -2,10 +2,6 @@
 
 public class PlayerController : MonoBehaviour
 {
-    #region Properties
-    public bool IsActive { get; set; }
-    #endregion
-
     #region Fields
     [Header("Parameters")]
     [SerializeField] float movementSpeed;
@@ -13,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxTilt;
 
     Camera mainCamera;
+    Player playerScript;
     Rigidbody rgdbody;
 
     Quaternion previosRotation;
@@ -31,10 +28,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+        playerScript = GetComponent<Player>();
         rgdbody = GetComponent<Rigidbody>();
 
         yDefaultPosition = transform.position.y;
-        IsActive = true;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -49,7 +46,7 @@ public class PlayerController : MonoBehaviour
         mousePosition.z = Vector3.Dot(transform.position - mainCamera.transform.position, mainCamera.transform.forward);
         targetRotation = GetTargetYRotation(mousePosition);
 
-        if (Input.GetMouseButton(1) && IsActive)
+        if (Input.GetMouseButton(1) && playerScript.IsActive)
         {
             mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
             mousePosition.y = yDefaultPosition;
@@ -58,7 +55,7 @@ public class PlayerController : MonoBehaviour
             targetRotation = GetTargetXZRotation();
             previosRotation = transform.rotation;
         }
-        if (IsActive)
+        if (playerScript.IsActive)
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 

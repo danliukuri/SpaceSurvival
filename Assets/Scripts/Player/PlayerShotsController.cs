@@ -4,37 +4,39 @@ using UnityEngine;
 
 public class PlayerShotsController : MonoBehaviour
 {
+    #region Fields
     [Header("Parameters")]
     [SerializeField] GameObject projectile;
     [SerializeField] Transform player;
     [SerializeField] List<Transform> shotSpawnes;
-    [SerializeField] float fireDelta = 0.5F;
+    [SerializeField] float fireDelta = 0.5f;
 
     GameObject newProjectile;
-    Vector3 spawnerPosition;
-    float nextFire = 0.5f;
-    float myTime = 0.0f;
+    Player playerScript;
+    Timer timer = new Timer();
+    Vector3 spawnerPosition = new Vector3();
+    #endregion
 
-    private void Start()
+    #region Methods
+    void Start()
     {
-        spawnerPosition = new Vector3();
+        playerScript = player.GetComponent<Player>();
+        timer.Run(fireDelta);
     }
     void Update()
     {
-        myTime += Time.deltaTime;
+        timer.Update();
 
-        if (Input.GetMouseButton(0) && myTime > nextFire)
+        if (Input.GetMouseButton(0) && timer.Finished && playerScript.IsActive)
         {
-            nextFire = myTime + fireDelta;
-            
             shotSpawnes.ForEach(spw =>
             {
                 spawnerPosition.Set(spw.position.x, 0f, spw.position.z);
                 newProjectile = Instantiate(projectile, spawnerPosition, Quaternion.Euler(0f, player.rotation.eulerAngles.y, 0f));
             });
-            
-            nextFire -= myTime;
-            myTime = 0.0f;
+            timer.Reset();
+            timer.Run(fireDelta);
         }
     }
+    #endregion
 }

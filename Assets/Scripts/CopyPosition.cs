@@ -7,7 +7,7 @@ public class CopyPosition : MonoBehaviour
 	[SerializeField] Transform player;
 	[SerializeField] float speed;
 
-	PlayerController playerController;
+	Player playerScript;
 	Camera mainCamera;
 	Vector3 mousePosition;
 	Vector3 offset;
@@ -18,7 +18,7 @@ public class CopyPosition : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		playerController = player.GetComponent<PlayerController>();
+		playerScript = player.GetComponent<Player>();
 		mainCamera = Camera.main;
 		offset = transform.position;
 		Cursor.lockState = CursorLockMode.Confined;
@@ -26,7 +26,7 @@ public class CopyPosition : MonoBehaviour
 
     void FixedUpdate()
 	{
-		if (Input.GetMouseButton(1) && playerController.IsActive && player)
+		if (Input.GetMouseButton(1) && playerScript.IsActive && player)
 		{
 			mousePosition = Input.mousePosition;
 			mousePosition.z = Vector3.Dot(player.position - transform.position, transform.forward);
@@ -35,7 +35,7 @@ public class CopyPosition : MonoBehaviour
 			speedСontroller = (mousePosition - transform.position).magnitude;
 			transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed / speedСontroller * Time.deltaTime);
 		}
-		else if (!playerController.IsActive)
+		else if (!playerScript.IsActive)
 		{
 			transform.position = Vector3.Lerp(transform.position, player.position + offset, speed / speedСontroller * Time.deltaTime);
 		}

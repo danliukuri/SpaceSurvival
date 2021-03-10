@@ -11,7 +11,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     [SerializeField] Vector3 playerOnBasePosition;
     [SerializeField] float basePositionRadius;
 
-    PlayerController playerController;
+    Player playerScript;
     ParticlesController playerParticlesController;
     Timer timer = new Timer();
 
@@ -32,7 +32,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerController = GetComponent<PlayerController>();
+        playerScript = GetComponent<Player>();
         playerParticlesController = GetComponent<ParticlesController>();
         playerDefaultYPosition = transform.position.y;
     }
@@ -61,7 +61,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     void StartLandsOnTheBase()
     {
         isLandsOnTheBase = true;
-        playerController.IsActive = false;
+        playerScript.IsActive = false;
     }
     void LandsOnTheBaseUpdate()
     {
@@ -122,7 +122,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     {
         isPlayerOnTheBase = false;
         isTakeOffFromBase = false;
-        playerController.IsActive = true;
+        playerScript.IsActive = true;
     }
 
     bool IsPlayerOnTheBasePosition() => Mathf.Abs(transform.position.x) < basePositionRadius && Mathf.Abs(transform.position.z) < basePositionRadius;
