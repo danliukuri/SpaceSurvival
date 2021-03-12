@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class BarrelController : MonoBehaviour
 {
+    #region Fields
     [SerializeField] float movementSpeed;
     [SerializeField] float rotationSpeed;
     Rigidbody rgdbody;
+    #endregion
 
-    /// <summary> Random value from [-1.1; -0.1] or [0.1; 1.1] </summary>
-    float MyRandomValue() => (Random.value + 0.1f) * Random.Range(-1, 2);
+    #region Methods
+    /// <summary> Random value from [-1.5; -0.5] or [0.5; 1.5] </summary>
+    float MyRandomValue() => (Random.value + 0.5f) * Random.Range(-1, 2);
 
     // Start is called before the first frame update
     void Start()
@@ -19,20 +22,9 @@ public class BarrelController : MonoBehaviour
         rgdbody.angularVelocity = new Vector3(MyRandomValue(), MyRandomValue(), MyRandomValue()) * rotationSpeed;
     }
 
-    private void Update()
-    {
-        if (transform.position.y != 0)
-        {
-            rgdbody.velocity = new Vector3(rgdbody.velocity.x, 0f, rgdbody.velocity.z);
-            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
-        }
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.CompareTag("Player"))
-        {
-            Destroy(gameObject);
-        }
+
     }
+    #endregion
 }

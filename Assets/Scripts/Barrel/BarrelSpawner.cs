@@ -44,6 +44,7 @@ public class BarrelSpawner : MonoBehaviour
             float ang = Random.value * 360;
             offset.x = Mathf.Sin(ang * Mathf.Deg2Rad) * spawnRadius;
             offset.z = Mathf.Cos(ang * Mathf.Deg2Rad) * spawnRadius;
+            offset.y = -player.position.y;
             Instantiate(barrelPrefab, player.position + offset, Random.rotation);
         }
     }
