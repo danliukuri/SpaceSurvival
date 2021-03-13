@@ -25,6 +25,7 @@ public class StockOfResources
         if(HasFreeSpace)
             resources.Add(resource);
     }
+    public void Remove(Resource resource) => resources.Remove(resource);
     public void Clear() => resources.Clear();
     #endregion
 }

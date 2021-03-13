@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -35,12 +36,10 @@ public class Timer
 	/// <param name = "duration"> Sets the duration of the timer. Value must be greater than zero</param>
 	public void Run(float duration)
 	{
-		// only run with valid duration
-		if (duration > 0f)
-		{
-			Duration = duration;
-			Running = true;
-		}
+		if(duration <= 0f) // only run with valid duration
+			throw new ArgumentException("Value must be greater than 0", nameof(duration));
+		Duration = duration;
+		Running = true;	
 	}
 	/// <summary>
 	/// Update the timer. It is suggested you called once per frame
