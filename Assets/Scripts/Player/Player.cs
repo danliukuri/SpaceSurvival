@@ -15,10 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject playerBase;
     [SerializeField] int maxWeight;
 
-    StockOfResources baseStockOfResources;
+    Base baseScript;
     StockOfResources stockOfResources;
 
-    
     Timer timer = new Timer();
     #endregion
 
@@ -26,10 +25,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         stockOfResources = new StockOfResources(maxWeight);
-    }
-    void Start()
-    {
-        baseStockOfResources = playerBase.GetComponent<Base>().GetStockOfResources();
+        baseScript = playerBase.GetComponent<Base>();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -53,7 +49,7 @@ public class Player : MonoBehaviour
         if (timer.Finished)
         {
             Debug.Log("isUnloaded");
-            baseStockOfResources.Add(stockOfResources.Resources.Last());
+            baseScript.AddResource(stockOfResources.Resources.Last());
             stockOfResources.Remove(stockOfResources.Resources.Last());
             timer.Reset();
         }

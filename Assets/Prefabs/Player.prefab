@@ -111,6 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf007122acbeb2478cd9284487dd521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyToUnloadResources: 0
+  playerBase: {fileID: 0}
+  maxWeight: 0
 --- !u!114 &1107827599877464841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8df625ef9a0c3ea46b7c38edfa688a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyToUnloadResources: 32
   keyToTakeOffFromBase: 32
   keyToLandsOnTheBase: 32
   playerOnBasePosition: {x: -0.4, y: -2.9, z: 0}
@@ -9894,7 +9896,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107827600581887965}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1107827600796373720}
@@ -9944,7 +9946,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107827600624446191}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.4}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1107827600004131395}
@@ -14817,7 +14819,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107827600920198787}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1107827601148319878}
