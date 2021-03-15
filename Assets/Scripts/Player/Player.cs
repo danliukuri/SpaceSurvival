@@ -14,7 +14,9 @@ public class Player : MonoBehaviour
     [SerializeField] KeyCode keyToUnloadResources;
     [SerializeField] GameObject playerBase;
     [SerializeField] int maxWeight;
+    [SerializeField] GameObject UIScripts;
 
+    PlayerUI playerUI;
     Base baseScript;
     StockOfResources stockOfResources;
 
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour
     {
         stockOfResources = new StockOfResources(maxWeight);
         baseScript = playerBase.GetComponent<Base>();
+        playerUI = UIScripts.GetComponent<PlayerUI>();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -48,7 +51,6 @@ public class Player : MonoBehaviour
     {
         if (timer.Finished)
         {
-            Debug.Log("isUnloaded");
             baseScript.AddResource(stockOfResources.Resources.Last());
             stockOfResources.Remove(stockOfResources.Resources.Last());
             timer.Reset();
@@ -56,14 +58,29 @@ public class Player : MonoBehaviour
         else if (Input.GetKey(keyToUnloadResources))
         {
             if (timer.Running)
+            {
                 timer.Update();
+                playerUI.UpdateResourceUnloadingSlider(timer.Duration, timer.ElapsedSeconds);
+            }
             else if (stockOfResources.Resources.Count == 0)
+            { 
+                playerUI.IsResourceUnloadingSliderActive = false;
                 AreResourcesBeingUnloaded = true;
+            }
             else
+            {
                 timer.Run(stockOfResources.Resources.Last().Weight);
+                playerUI.IsResourceUnloadingSliderActive = true;
+            }
+                
         }
         else if (Input.GetKeyUp(keyToUnloadResources))
+        {
             timer.Reset();
+            playerUI.IsResourceUnloadingSliderActive = false;
+            playerUI.UpdateResourceUnloadingSlider(timer.Duration, timer.ElapsedSeconds);
+        }    
+            
     }
     #endregion
 }

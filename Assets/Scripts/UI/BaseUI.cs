@@ -10,6 +10,8 @@ public class BaseUI : MonoBehaviour
     [SerializeField] GameObject playerBase;
     Base baseScript;
     #endregion
+
+    #region Methods
     // Start is called before the first frame update
     void Start()
     {
@@ -22,4 +24,5 @@ public class BaseUI : MonoBehaviour
     {
         baseHpSlider.value = baseScript.Hp;
     }
+    #endregion
 }

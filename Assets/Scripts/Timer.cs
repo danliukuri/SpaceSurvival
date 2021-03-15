@@ -18,15 +18,13 @@ public class Timer
 	/// <value>true if finished; otherwise, false.</value>
 	public bool Finished { get; protected set; }
 	/// <summary>
-	/// Gets whether or not the timer is currently running
+	/// Gets the seconds that have passed since the timer runs
 	/// </summary>
-	/// <value>true if running; otherwise, false.</value>
 	public bool Running { get; protected set; }
-	#endregion
-
-	#region Fields
-	// timer execution
-	float elapsedSeconds;
+	/// <summary>
+	/// Get elapsed seconds since the timer runs
+	/// </summary>
+	public float ElapsedSeconds { get; protected set; }
 	#endregion
 
 	#region Methods
@@ -49,8 +47,8 @@ public class Timer
 		// Update timer and check for finished
 		if (Running)
         {
-			elapsedSeconds += Time.deltaTime;
-			if (elapsedSeconds >= Duration)
+			ElapsedSeconds += Time.deltaTime;
+			if (ElapsedSeconds >= Duration)
             {
 				Running = false;
 				Finished = true;
@@ -62,8 +60,8 @@ public class Timer
 	/// </summary>
 	public void Reset()
     {
-		Finished = false;
-		elapsedSeconds = 0;
+		Finished = Running = false;
+		Duration = ElapsedSeconds = 0f;
     }
     #endregion
 }
