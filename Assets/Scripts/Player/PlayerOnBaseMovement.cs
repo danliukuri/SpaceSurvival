@@ -11,14 +11,12 @@ public class PlayerOnBaseMovement : MonoBehaviour
     [SerializeField] Vector3 playerOnBasePosition;
     [SerializeField] float basePositionRadius;
 
-    Player player;
-
-    Vector3 randomVector = new Vector3();
+    Player playerScript;
     Vector3 targetPosition = new Vector3();
 
     bool isLandsOnTheBase;
     bool isTakeOffFromBase;
-    bool isPlayerOnTheBase;
+    bool isPlayerOnTheBase = true;
 
     float distanse;
     float playerSpeedController;
@@ -29,8 +27,8 @@ public class PlayerOnBaseMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Player>();
-        playerDefaultYPosition = transform.position.y;
+        playerScript = GetComponent<Player>();
+        playerDefaultYPosition = playerScript.DefaultYPosition;
     }
     
     // Update is called once per frame
@@ -38,9 +36,9 @@ public class PlayerOnBaseMovement : MonoBehaviour
     {
         if (!isPlayerOnTheBase && Input.GetKeyDown(keyToLandsOnTheBase) && IsPlayerOnTheBasePosition() && !isTakeOffFromBase)
             StartLandsOnTheBase();
-        else if (!player.AreResourcesBeingUnloaded && isPlayerOnTheBase)
-            player.UnloadResources();
-        else if (player.AreResourcesBeingUnloaded && Input.GetKeyDown(keyToTakeOffFromBase))
+        else if (!playerScript.AreResourcesBeingUnloaded && isPlayerOnTheBase)
+            playerScript.UnloadResources();
+        else if (playerScript.AreResourcesBeingUnloaded && Input.GetKeyDown(keyToTakeOffFromBase) && !isTakeOffFromBase)
             StartTakeOffFromBase();
     }
     void FixedUpdate()
@@ -54,7 +52,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     void StartLandsOnTheBase()
     {
         isLandsOnTheBase = true;
-        player.IsActive = false;
+        playerScript.IsActive = false;
     }
     void LandsOnTheBaseUpdate()
     {
@@ -78,8 +76,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     {
         isPlayerOnTheBase = false;
         isTakeOffFromBase = true;
-        randomVector.Set(Random.Range(-2f, 2f), Random.Range(-180f, 180f), Random.Range(-2f, 2f));
-        targetPosition.Set(randomVector.x, playerDefaultYPosition, randomVector.z);
+        targetPosition.Set(Random.Range(-2f, 2f), playerDefaultYPosition, Random.Range(-2f, 2f));
     }
     void TakeOffFromBaseUpdate()
     {
@@ -87,8 +84,9 @@ public class PlayerOnBaseMovement : MonoBehaviour
         playerSpeedController = distanse < 1f ? 1f : distanse;
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, 4f / playerSpeedController * Time.deltaTime);
-        transform.rotation = Quaternion.LerpUnclamped(transform.rotation,
-            Quaternion.Euler(0f, randomVector.y, 0f), playerSpeedController / (playerSpeedController - 0.5f) * Time.deltaTime);
+        transform.rotation = Quaternion.LerpUnclamped(transform.rotation, 
+            Quaternion.Euler(0f, Quaternion.LookRotation(transform.position, targetPosition).eulerAngles.y, 0f),
+            playerSpeedController / (playerSpeedController - 0.5f) * Time.deltaTime);
 
         if (transform.position.y >= playerDefaultYPosition)
             FinishTakeOffFromBase();
@@ -96,7 +94,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
     void FinishTakeOffFromBase()
     {
         isTakeOffFromBase = false;
-        player.IsActive = true;
+        playerScript.IsActive = true;
     }
 
     bool IsPlayerOnTheBasePosition() => Mathf.Abs(transform.position.x) < basePositionRadius && Mathf.Abs(transform.position.z) < basePositionRadius;

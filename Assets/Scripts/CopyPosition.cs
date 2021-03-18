@@ -6,11 +6,11 @@ public class CopyPosition : MonoBehaviour
 	[Header("Parameters")]
 	[SerializeField] Transform player;
 	[SerializeField] float speed;
+	[SerializeField] Vector3 offset;
 
 	Player playerScript;
 	Camera mainCamera;
 	Vector3 mousePosition;
-	Vector3 offset;
 	float speedСontroller;
 	#endregion
 
@@ -20,17 +20,15 @@ public class CopyPosition : MonoBehaviour
 	{
 		playerScript = player.GetComponent<Player>();
 		mainCamera = Camera.main;
-		offset = transform.position;
 		Cursor.lockState = CursorLockMode.Confined;
 	}
-
     void FixedUpdate()
 	{
 		if (Input.GetMouseButton(1) && playerScript.IsActive && player)
 		{
 			mousePosition = Input.mousePosition;
 			mousePosition.z = Vector3.Dot(player.position - transform.position, transform.forward);
-			mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+			mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
 
 			speedСontroller = (mousePosition - transform.position).magnitude;
 			transform.position = Vector3.Lerp(transform.position, mousePosition + offset, speed / speedСontroller * Time.deltaTime);

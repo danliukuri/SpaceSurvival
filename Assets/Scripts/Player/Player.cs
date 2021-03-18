@@ -6,14 +6,16 @@ using System.Linq;
 public class Player : MonoBehaviour
 {
     #region Properties
-    public bool IsActive { get; set; } = true;
-    public bool AreResourcesBeingUnloaded { get; protected set; }
+    public bool IsActive { get; set; }
+    public bool AreResourcesBeingUnloaded { get; protected set; } = true;
+    public float DefaultYPosition => defaultYPosition; 
     #endregion
 
     #region Fields
     [SerializeField] KeyCode keyToUnloadResources;
     [SerializeField] GameObject playerBase;
     [SerializeField] int maxWeight;
+    [SerializeField] float defaultYPosition;
     [SerializeField] GameObject UIScripts;
 
     PlayerUI playerUI;

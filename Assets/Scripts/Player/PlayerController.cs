@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         playerScript = GetComponent<Player>();
         rgdbody = GetComponent<Rigidbody>();
 
-        yDefaultPosition = transform.position.y;
+        yDefaultPosition =  playerScript.DefaultYPosition;
     }
 
     private void OnCollisionEnter(Collision collision)
