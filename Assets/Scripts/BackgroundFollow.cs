@@ -19,6 +19,8 @@ public class BackgroundFollow : MonoBehaviour
 	{
 		offset.x = transform.position.x / transform.localScale.x / parralax;
 		offset.y = transform.position.z / transform.localScale.y / parralax;
+		offset.x += transform.rotation.eulerAngles.y / transform.localScale.x / parralax;
+		offset.y += transform.rotation.eulerAngles.x / transform.localScale.x / parralax;
 
 		material.mainTextureOffset = offset;
 	}
