@@ -17,7 +17,6 @@ public class CameraController : MonoBehaviour
 	Camera mainCamera;
 	Vector3 mousePosition;
 	float speedСontroller;
-	float rotationСontroller;
 	bool isMoveTodefaultposition;
 	#endregion
 
@@ -61,6 +60,8 @@ public class CameraController : MonoBehaviour
 			if (speedСontroller < 0.2f + movementSpeed - 1f)
 				Game.Started = true;
 		}
+		else if (!Game.Started)  // Rotate around the base
+			transform.RotateAround(rotationCenterOnStart, Vector3.up, rotationSpeed * Time.deltaTime);
 	}
 
     public void MoveToDefaultPosition() => isMoveTodefaultposition = true;

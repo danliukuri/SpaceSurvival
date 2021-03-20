@@ -1707,7 +1707,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 30
+  far clip plane: 31
   field of view: 60
   orthographic: 0
   orthographic size: 6
@@ -1768,7 +1768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1093893151}
   movementSpeed: 20
-  rotationSpeed: 15
+  rotationSpeed: 5
   offset: {x: 0, y: 10, z: 0}
   defaultRotation: {x: 90, y: 0, z: 0}
   rotationCenterOnStart: {x: -6.1, y: -2.9, z: 3}

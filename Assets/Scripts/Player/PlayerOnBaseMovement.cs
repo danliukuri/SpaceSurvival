@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
-using System.Linq;
 
 public class PlayerOnBaseMovement : MonoBehaviour
 {
+    #region Properties
+    bool IsPlayerOnTheBasePosition => Mathf.Abs(transform.position.x) < basePositionRadius && Mathf.Abs(transform.position.z) < basePositionRadius;
+    #endregion
+
     #region Fields
     [Header("Keys")]
     [SerializeField] KeyCode keyToTakeOffFromBase;
@@ -34,11 +37,11 @@ public class PlayerOnBaseMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isPlayerOnTheBase && Input.GetKeyDown(keyToLandsOnTheBase) && IsPlayerOnTheBasePosition() && !isTakeOffFromBase)
+        if (!isPlayerOnTheBase && Input.GetKeyDown(keyToLandsOnTheBase) && IsPlayerOnTheBasePosition && !isTakeOffFromBase)
             StartLandsOnTheBase();
         else if (!playerScript.AreResourcesBeingUnloaded && isPlayerOnTheBase)
             playerScript.UnloadResources();
-        else if (playerScript.AreResourcesBeingUnloaded && Input.GetKeyDown(keyToTakeOffFromBase) && !isTakeOffFromBase)
+        else if (playerScript.AreResourcesBeingUnloaded && Input.GetKeyDown(keyToTakeOffFromBase) && isPlayerOnTheBase && Game.Started)
             StartTakeOffFromBase();
     }
     void FixedUpdate()
@@ -96,7 +99,5 @@ public class PlayerOnBaseMovement : MonoBehaviour
         isTakeOffFromBase = false;
         playerScript.IsActive = true;
     }
-
-    bool IsPlayerOnTheBasePosition() => Mathf.Abs(transform.position.x) < basePositionRadius && Mathf.Abs(transform.position.z) < basePositionRadius;
     #endregion
 }

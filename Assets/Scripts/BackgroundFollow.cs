@@ -10,17 +10,17 @@ public class BackgroundFollow : MonoBehaviour
     #endregion
 
     #region Methods
-    private void Start()
+    void Start()
     {
 		material = GetComponent<MeshRenderer>().material;
 		offset = material.mainTextureOffset;
 	}
-    void FixedUpdate ()
+	void FixedUpdate()
 	{
 		offset.x = transform.position.x / transform.localScale.x / parralax;
 		offset.y = transform.position.z / transform.localScale.y / parralax;
-		offset.x += transform.rotation.eulerAngles.y / transform.localScale.x / parralax;
-		offset.y += transform.rotation.eulerAngles.x / transform.localScale.x / parralax;
+
+		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.y);
 
 		material.mainTextureOffset = offset;
 	}
