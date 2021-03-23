@@ -12,21 +12,22 @@ public class Base : MonoBehaviour
     [SerializeField] AnimationCurve destructionCurve;
     [SerializeField] float destructionRate;
     [SerializeField] int maxWeight;
-    [SerializeField] GameObject UIScripts;
+    [SerializeField] BaseUI baseUI;
 
     StockOfResources stockOfResources;
-    BaseUI baseUI;
     #endregion
 
     #region Methods
     private void Update()
     {
-        Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
-        baseUI.UpdateHpSlider();
+        if(Game.Started)
+        {
+            Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
+            baseUI.UpdateHpSlider();
+        }
     }
     void Awake()
     {
-        baseUI = UIScripts.GetComponent<BaseUI>();
         stockOfResources = new StockOfResources(maxWeight);
         Hp = maxWeight;
     }

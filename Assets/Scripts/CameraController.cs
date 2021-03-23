@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
 {
 	#region Fields
 	[Header("Parameters")]
+	[SerializeField] CanvasButtons canvasButtons;
 	[SerializeField] Transform player;
 	[SerializeField] float movementSpeed;
 	[SerializeField] float rotationSpeed;
@@ -25,14 +26,9 @@ public class CameraController : MonoBehaviour
 	void Start()
 	{
 		playerScript = player.GetComponent<Player>();
-		mainCamera = Camera.main;
+		mainCamera = GetComponent<Camera>();
 
 		Cursor.lockState = CursorLockMode.Confined;
-	}
-    void Update()
-    {
-		if (Input.GetKeyDown(KeyCode.RightAlt))
-			MoveToDefaultPosition();
 	}
     void FixedUpdate()
 	{
@@ -56,9 +52,9 @@ public class CameraController : MonoBehaviour
 			MoveToPosition(player.position + offset, speedСontroller);
 
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(defaultRotation), movementSpeed / speedСontroller * Time.deltaTime);
-			
+
 			if (speedСontroller < 0.2f + movementSpeed - 1f)
-				Game.Started = true;
+				canvasButtons.StartGameplay();
 		}
 		else if (!Game.Started)  // Rotate around the base
 			transform.RotateAround(rotationCenterOnStart, Vector3.up, rotationSpeed * Time.deltaTime);
