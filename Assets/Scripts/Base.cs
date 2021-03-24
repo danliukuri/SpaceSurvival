@@ -13,6 +13,7 @@ public class Base : MonoBehaviour
     [SerializeField] float destructionRate;
     [SerializeField] int maxWeight;
     [SerializeField] BaseUI baseUI;
+    [SerializeField] CanvasButtons canvasButtons;
 
     StockOfResources stockOfResources;
     #endregion
@@ -24,6 +25,8 @@ public class Base : MonoBehaviour
         {
             Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
             baseUI.UpdateHpSlider();
+            if (Hp <= 0f)
+                canvasButtons.FinishGameplay();
         }
     }
     void Awake()
