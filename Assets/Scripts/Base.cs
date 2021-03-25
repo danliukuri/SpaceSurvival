@@ -25,6 +25,7 @@ public class Base : MonoBehaviour
         {
             Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
             baseUI.UpdateHpSlider();
+            baseUI.UpdateHpText();
             if (Hp <= 0f)
                 canvasButtons.FinishGameplay();
         }
@@ -40,7 +41,13 @@ public class Base : MonoBehaviour
     {
         stockOfResources.Add(resource);
         Hp += resource.Weight;
+        if (Hp > maxWeight)
+        {
+            maxWeight = (int)Mathf.Ceil(Hp);
+            baseUI.UpdateHpSliderMaxValue();
+        } 
         baseUI.UpdateHpSlider();
+        baseUI.UpdateHpText();
     }
     #endregion
 }

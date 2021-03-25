@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class BaseUI : MonoBehaviour
 {
     #region Fields
     [SerializeField] Slider baseHpSlider;
+    [SerializeField] TextMeshProUGUI baseHpText;
     [SerializeField] GameObject playerBase;
     Base baseScript;
     #endregion
@@ -16,13 +18,19 @@ public class BaseUI : MonoBehaviour
     void Start()
     {
         baseScript = playerBase.GetComponent<Base>();
-        baseHpSlider.maxValue = baseScript.GetStockOfResources().MaxWeight;
-        UpdateHpSlider();
+        UpdateHpSliderMaxValue();
     }
-
+    public void UpdateHpSliderMaxValue()
+    {
+        baseHpSlider.maxValue = baseScript.Hp;
+    }
     public void UpdateHpSlider()
     {
         baseHpSlider.value = baseScript.Hp;
+    }
+    public void UpdateHpText()
+    {
+        baseHpText.text = Mathf.Ceil(baseScript.Hp) + "/" + Mathf.Ceil(baseHpSlider.maxValue);
     }
     #endregion
 }
