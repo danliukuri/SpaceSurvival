@@ -13,15 +13,14 @@ public class Player : MonoBehaviour
 
     #region Fields
     [SerializeField] KeyCode keyToUnloadResources;
-    [SerializeField] GameObject playerBase;
+    [SerializeField] Base baseScript;
     [SerializeField] int maxWeight;
     [SerializeField] float defaultYPosition;
-    [SerializeField] GameObject UIScripts;
+    [SerializeField] PlayerUI playerUI;
 
-    PlayerUI playerUI;
-    Base baseScript;
+    bool isPossibleToSpawn = true;
+    const float spawnRate = 1f;
     StockOfResources stockOfResources;
-
     Timer timer = new Timer();
     #endregion
 
@@ -29,25 +28,29 @@ public class Player : MonoBehaviour
     void Awake()
     {
         stockOfResources = new StockOfResources(maxWeight);
-        baseScript = playerBase.GetComponent<Base>();
-        playerUI = UIScripts.GetComponent<PlayerUI>();
     }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Barrel"))
         {
-            if (stockOfResources.HasFreeSpace)   
+            if (stockOfResources.HasFreeSpace)
             {
                 AreResourcesBeingUnloaded = false;
                 stockOfResources.Add(new Barrel());
                 Destroy(collision.gameObject);
             }
-            else
+            else if(isPossibleToSpawn)
             {
-                Debug.Log("No free space in a ship");
-            }
+                isPossibleToSpawn = false;
+                StartCoroutine(PossibleToSpawn());
+                playerUI.NoFreeSpace(collision.transform.position);
+            }    
         }
+    }
+    IEnumerator PossibleToSpawn()
+    { 
+        yield return new WaitForSeconds(spawnRate);
+        isPossibleToSpawn = true;
     }
     public void UnloadResources()
     {
@@ -73,8 +76,7 @@ public class Player : MonoBehaviour
             {
                 timer.Run(stockOfResources.Resources.Last().Weight);
                 playerUI.IsResourceUnloadingSliderActive = true;
-            }
-                
+            }  
         }
         else if (Input.GetKeyUp(keyToUnloadResources))
         {

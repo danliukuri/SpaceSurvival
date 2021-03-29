@@ -1489,7 +1489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7924528, g: 0.14503376, b: 0.14503376, a: 1}
+  m_Color: {r: 0.8113208, g: 0.117871106, b: 0.117871106, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1780,6 +1780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceUnloadingSlider: {fileID: 222550774}
+  noFreeSpaceText: {fileID: 287005088776521916, guid: 55cce88626a85df4eac3521a66507d36, type: 3}
 --- !u!114 &1306416101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1967,6 +1968,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8938720145322699889, guid: f08d9d60190bd4842a2ad5763dacc854, type: 3}
   m_PrefabInstance: {fileID: 1556262360}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1406271868 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8938720145322699888, guid: f08d9d60190bd4842a2ad5763dacc854, type: 3}
+  m_PrefabInstance: {fileID: 1556262360}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1406271867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5be08060042fcd4393f2fbdc0c7b3f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1407503990
 GameObject:
   m_ObjectHideFlags: 0
@@ -2860,8 +2872,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 50/100
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c69bede2d51aade468de8a1f1146e071, type: 2}
-  m_sharedMaterial: {fileID: -6429411099136849271, guid: c69bede2d51aade468de8a1f1146e071, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2869,8 +2881,8 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
+  m_enableVertexGradient: 1
+  m_colorMode: 0
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2891,7 +2903,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 32
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 4096
   m_textAlignment: 65535
@@ -3519,7 +3531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.0754717, g: 0, b: 0.03355631, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3835,5 +3847,13 @@ PrefabInstance:
       propertyPath: defaultYPosition
       value: -0.257
       objectReference: {fileID: 0}
+    - target: {fileID: 2434514332926375653, guid: d6279373ba1431447928338c6d81e7f1, type: 3}
+      propertyPath: playerUI
+      value: 
+      objectReference: {fileID: 1306416100}
+    - target: {fileID: 2434514332926375653, guid: d6279373ba1431447928338c6d81e7f1, type: 3}
+      propertyPath: baseScript
+      value: 
+      objectReference: {fileID: 1406271868}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6279373ba1431447928338c6d81e7f1, type: 3}
