@@ -52,7 +52,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
             TakeOffFromBaseUpdate();
     }
 
-    void StartLandsOnTheBase()
+    public void StartLandsOnTheBase()
     {
         isLandsOnTheBase = true;
         playerScript.IsActive = false;
@@ -75,7 +75,7 @@ public class PlayerOnBaseMovement : MonoBehaviour
         isLandsOnTheBase = false;  
     }
 
-    void StartTakeOffFromBase()
+    public void StartTakeOffFromBase()
     {
         isPlayerOnTheBase = false;
         isTakeOffFromBase = true;

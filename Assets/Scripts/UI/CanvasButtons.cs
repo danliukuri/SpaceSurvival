@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class CanvasButtons : MonoBehaviour
 {
     #region Fields
+    [SerializeField] GameObject intro;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject gameplayMenu;
     [SerializeField] GameObject gameoverMenu;
@@ -16,6 +16,7 @@ public class CanvasButtons : MonoBehaviour
     {
         Camera.main.GetComponent<CameraController>().MoveToDefaultPosition();
         mainMenu.SetActive(false);
+        intro.SetActive(true);
     }
     public void Quit()
     {
@@ -30,8 +31,10 @@ public class CanvasButtons : MonoBehaviour
 
     public void StartGameplay()
     {
+        intro.GetComponent<Animator>().SetBool("isEndIntro", true);
         Game.Started = true;
         gameplayMenu.SetActive(true);
+        Destroy(intro, 3f);
     }
     public void FinishGameplay()
     {

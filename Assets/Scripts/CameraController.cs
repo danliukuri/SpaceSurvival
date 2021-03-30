@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
 	Player playerScript;
 	Camera mainCamera;
 	Vector3 mousePosition;
+	Quaternion defaultRotationQuaternion;
 	float speedСontroller;
 	bool isMoveTodefaultposition;
 	#endregion
@@ -27,6 +28,7 @@ public class CameraController : MonoBehaviour
 	{
 		playerScript = player.GetComponent<Player>();
 		mainCamera = GetComponent<Camera>();
+		defaultRotationQuaternion = Quaternion.Euler(defaultRotation);
 
 		Cursor.lockState = CursorLockMode.Confined;
 	}
@@ -48,19 +50,25 @@ public class CameraController : MonoBehaviour
 		}
 		if (isMoveTodefaultposition && !Game.Started) // Move to player position
 		{
-			speedСontroller = Vector3.Distance(transform.position, player.position + offset) + movementSpeed - 1f;
+			speedСontroller = Vector3.Distance(transform.position, player.position + offset) + 10f;
 			MoveToPosition(player.position + offset, speedСontroller);
 
-			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(defaultRotation), movementSpeed / speedСontroller * Time.deltaTime);
-
-			if (speedСontroller < 0.2f + movementSpeed - 1f)
-				canvasButtons.StartGameplay();
+			transform.rotation = Quaternion.Slerp(transform.rotation, defaultRotationQuaternion, 15f / speedСontroller * Time.deltaTime);
+			if (speedСontroller < 0.2f + 10f && Input.GetKeyDown(KeyCode.Space))
+				StartGameplay();
 		}
 		else if (!Game.Started)  // Rotate around the base
 			transform.RotateAround(rotationCenterOnStart, Vector3.up, rotationSpeed * Time.deltaTime);
+		if (transform.rotation != defaultRotationQuaternion && Game.Started)
+			transform.rotation = Quaternion.Slerp(transform.rotation, defaultRotationQuaternion, 15f / speedСontroller * Time.deltaTime);
 	}
 
-    public void MoveToDefaultPosition() => isMoveTodefaultposition = true;
+	void StartGameplay()
+	{
+		player.GetComponent<PlayerOnBaseMovement>().StartTakeOffFromBase();
+		canvasButtons.StartGameplay();
+	}
+	public void MoveToDefaultPosition() => isMoveTodefaultposition = true;
 	void MoveToPosition(Vector3 target, float speedСontroller)
     {
 		transform.position = Vector3.Lerp(transform.position, target, movementSpeed / speedСontroller * Time.deltaTime);
