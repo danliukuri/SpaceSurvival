@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     {
         if (timer.Finished)
         {
+            playerUI.UnloadResource(stockOfResources.Resources.Last());
             baseScript.AddResource(stockOfResources.Resources.Last());
             stockOfResources.Remove(stockOfResources.Resources.Last());
             timer.Reset();

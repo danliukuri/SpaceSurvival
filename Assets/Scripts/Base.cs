@@ -6,6 +6,7 @@ public class Base : MonoBehaviour
 {
     #region Properties
     public float Hp { get; protected set; }
+    public float PreviousHpValue { get; protected set; }
     #endregion
 
     #region Fields
@@ -19,21 +20,26 @@ public class Base : MonoBehaviour
     #endregion
 
     #region Methods
-    private void Update()
+    void Update()
     {
         if(Game.Started)
         {
             Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
-            baseUI.UpdateHpSlider();
-            baseUI.UpdateHpText();
             if (Hp <= 0f)
                 canvasButtons.FinishGameplay();
+            else if (PreviousHpValue - Hp >= 1f)
+            {
+                PreviousHpValue = Mathf.Ceil(Hp);
+                baseUI.InstantiateBarrelConsumptionText();
+            }
+            baseUI.UpdateHpSlider();
+            baseUI.UpdateHpText();
         }
     }
     void Awake()
     {
         stockOfResources = new StockOfResources(maxWeight);
-        Hp = maxWeight;
+        PreviousHpValue = Hp = maxWeight;
     }
     public StockOfResources GetStockOfResources() => stockOfResources;
 
@@ -48,6 +54,7 @@ public class Base : MonoBehaviour
         } 
         baseUI.UpdateHpSlider();
         baseUI.UpdateHpText();
+        PreviousHpValue = Mathf.Ceil(Hp);
     }
     #endregion
 }

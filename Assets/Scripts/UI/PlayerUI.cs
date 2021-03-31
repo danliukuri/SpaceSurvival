@@ -15,10 +15,12 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] Slider resourceUnloadingSlider;
     [SerializeField] GameObject noFreeSpaceText;
     [SerializeField] GameObject foundBarrelText;
+    [SerializeField] GameObject foundBarrelTextUI;
 
     GameObject gameObj;
     float noFreeSpaceTextAnimationLength;
     float foundBarrelTextAnimationLength;
+    float foundBarrelTextUIAnimationLength;
     #endregion
 
     #region Methods
@@ -26,6 +28,7 @@ public class PlayerUI : MonoBehaviour
     {
         noFreeSpaceTextAnimationLength = GetAnimationLength(noFreeSpaceText);
         foundBarrelTextAnimationLength = GetAnimationLength(foundBarrelText);
+        foundBarrelTextUIAnimationLength = GetAnimationLength(foundBarrelTextUI);
     }
     public void UpdateResourceUnloadingSlider(float maxValue, float value)
     {
@@ -36,6 +39,14 @@ public class PlayerUI : MonoBehaviour
     public void NoFreeSpace(Vector3 position)
     {
         InstantiateObjWithAnimation(noFreeSpaceTextAnimationLength, noFreeSpaceText, new Vector3(position.x, position.y + 1f, position.z));
+    }
+    public void UnloadResource(Resource resource)
+    {
+        if(resource is Barrel)
+        {
+            gameObj = Instantiate(foundBarrelTextUI, transform);
+            Destroy(gameObj, foundBarrelTextUIAnimationLength);
+        }
     }
     public void FoundBarrel(Vector3 position)
     {
