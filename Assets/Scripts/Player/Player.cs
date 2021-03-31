@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
         {
             if (stockOfResources.HasFreeSpace)
             {
+                playerUI.FoundBarrel(collision.transform.position);
                 AreResourcesBeingUnloaded = false;
                 stockOfResources.Add(new Barrel());
                 Destroy(collision.gameObject);

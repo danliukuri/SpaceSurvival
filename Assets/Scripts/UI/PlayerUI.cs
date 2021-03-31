@@ -14,15 +14,18 @@ public class PlayerUI : MonoBehaviour
     #region Fields
     [SerializeField] Slider resourceUnloadingSlider;
     [SerializeField] GameObject noFreeSpaceText;
+    [SerializeField] GameObject foundBarrelText;
 
     GameObject gameObj;
-    float animationLength;
+    float noFreeSpaceTextAnimationLength;
+    float foundBarrelTextAnimationLength;
     #endregion
 
     #region Methods
     private void Awake()
     {
-        animationLength = noFreeSpaceText.GetComponent<Animator>().runtimeAnimatorController.animationClips.Select(c => c.length).Sum();
+        noFreeSpaceTextAnimationLength = GetAnimationLength(noFreeSpaceText);
+        foundBarrelTextAnimationLength = GetAnimationLength(foundBarrelText);
     }
     public void UpdateResourceUnloadingSlider(float maxValue, float value)
     {
@@ -32,8 +35,17 @@ public class PlayerUI : MonoBehaviour
     }
     public void NoFreeSpace(Vector3 position)
     {
-        gameObj = Instantiate(noFreeSpaceText, new Vector3(position.x, position.y + 1f, position.z), noFreeSpaceText.transform.rotation);
+        InstantiateObjWithAnimation(noFreeSpaceTextAnimationLength, noFreeSpaceText, new Vector3(position.x, position.y + 1f, position.z));
+    }
+    public void FoundBarrel(Vector3 position)
+    {
+        InstantiateObjWithAnimation(foundBarrelTextAnimationLength, foundBarrelText, new Vector3(position.x, position.y + 1f, position.z));
+    }
+    void InstantiateObjWithAnimation(float animationLength, GameObject obj, Vector3? position = null, Quaternion? rotation = null)
+    {
+        gameObj = Instantiate(obj, position ?? obj.transform.position, rotation ?? obj.transform.rotation);
         Destroy(gameObj, animationLength);
     }
+    float GetAnimationLength(GameObject gameObj) => gameObj.GetComponent<Animator>().runtimeAnimatorController.animationClips.Select(c => c.length).Sum();
     #endregion
 }

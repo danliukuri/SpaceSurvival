@@ -2493,6 +2493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceUnloadingSlider: {fileID: 222550774}
   noFreeSpaceText: {fileID: 287005088776521916, guid: 55cce88626a85df4eac3521a66507d36, type: 3}
+  foundBarrelText: {fileID: 9105209717451872438, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
 --- !u!114 &1306416101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4942,7 +4943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2434514332926375653, guid: d6279373ba1431447928338c6d81e7f1, type: 3}
       propertyPath: maxWeight
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2434514332926375653, guid: d6279373ba1431447928338c6d81e7f1, type: 3}
       propertyPath: keyToUnloadResources
@@ -4970,3 +4971,68 @@ PrefabInstance:
       objectReference: {fileID: 1406271868}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6279373ba1431447928338c6d81e7f1, type: 3}
+--- !u!1001 &9105209718421530548
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872432, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872438, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_Name
+      value: FoundBarrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209717451872439, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105209719065559228, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278239262
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 19b7f9705408ce3499b6955b08cf466d, type: 3}
