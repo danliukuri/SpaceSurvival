@@ -2339,7 +2339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2734,7 +2734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2809,7 +2809,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3130,11 +3130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetColor: {r: 0.049418494, g: 0.9150943, b: 0, a: 1}
-  needBoxIndicator: 1
-  needArrowIndicator: 1
-  needDistanceText: 1
-  indicator: {fileID: 0}
 --- !u!1 &1407503990
 GameObject:
   m_ObjectHideFlags: 0
@@ -3811,7 +3806,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1680218480}
-  - component: {fileID: 1680218481}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -3836,20 +3830,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1680218481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1680218479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59edf1d5f2689ca40a98e68b3cc0a5ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activePointerKey: 308
-  pointer: {fileID: 1994679800}
 --- !u!1 &1746576889
 GameObject:
   m_ObjectHideFlags: 0
@@ -4935,13 +4915,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1994679799}
   - component: {fileID: 1994679800}
+  - component: {fileID: 1994679801}
   m_Layer: 5
   m_Name: PointerToPlayerBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1994679799
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4977,15 +4958,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCamera: {fileID: 714121126}
   targetPosition: {x: 0, y: -2.9, z: 0}
-  targetSizeInTermsOfScreenSize: 0
-  borderSize: 65
+  targetSizeInTermsOfScreenSize: 100
   rectTransformPosition: {fileID: 1994679799}
   rectTransformRotation: {fileID: 1875484252}
+  borderSize: 65
   paddings:
     top: 30
     down: 0
     left: 0
     right: 0
+  creationAnimationName: PointerToPlayerBaseCreation
+  destructionAnimationName: PointerToPlayerBaseDestruction
+--- !u!95 &1994679801
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994679798}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 505ed6a3e02a1cb44b9b0cbb090f92c6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2007438770
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,7 +5226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

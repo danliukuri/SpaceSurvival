@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Pointer : MonoBehaviour
 {
-    #region Properties
-    public bool Active { get => gameObject.activeSelf; set => gameObject.SetActive(value); }
-    #endregion
-
     #region Fields
     [SerializeField] Camera uiCamera;
     [SerializeField] Vector3 targetPosition;
-    [SerializeField] float targetSizeInTermsOfScreenSize;
-    [SerializeField] float borderSize;
     [Header("Rect transforms")]
     [SerializeField] RectTransform rectTransformPosition;
     [SerializeField] RectTransform rectTransformRotation;
-    [Tooltip("Poiter area paddings")]
+    [Header("Poiter area settings")]
+    [SerializeField] float borderSize;
     [SerializeField] Sides4 paddings;
+    [Header("Animation names")]
+    [SerializeField] string creationAnimationName;
+    [SerializeField] string destructionAnimationName;
 
-    Sides4 screenBounds;
-    Camera mainCamera;
     PositionAndAngle positionAndAngle;
+    Camera mainCamera;
+    Sides4 screenBounds;
+    
+    Animator animator;
+    float animationLength;
+    int creationAnimationNameHash;
+    int destructionAnimationNameHash;
+
+    bool isVisible;
     #endregion
 
     #region Methods
@@ -30,41 +35,67 @@ public class Pointer : MonoBehaviour
         mainCamera = Camera.main;
         screenBounds = paddings + borderSize;
         positionAndAngle = new PositionAndAngle(screenBounds);
+
+        animator = GetComponent<Animator>();
+        animationLength = animator.runtimeAnimatorController.animationClips[0].length;
+        creationAnimationNameHash = Animator.StringToHash(creationAnimationName);
+        destructionAnimationNameHash = Animator.StringToHash(destructionAnimationName);
     }
     void Update()
     {
-        Vector3 targetPositionScreenPoint = mainCamera.WorldToScreenPoint(targetPosition);
-        if (IsTargetVisible(targetPositionScreenPoint, screenBounds))
+        if (Game.Started)
         {
-            //Active = false;
-
-            float angle;
-            (targetPositionScreenPoint, angle) = positionAndAngle.Get(targetPositionScreenPoint);
-
-            rectTransformRotation.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
-
-            rectTransformPosition.position = uiCamera.ScreenToWorldPoint(mainCamera.WorldToScreenPoint(targetPosition));
-            rectTransformPosition.localPosition = (Vector2)rectTransformPosition.localPosition;
+            Vector3 targetPositionScreenPoint = GetTargetPositionScreenPoint();
+            if (IsTargetVisible(targetPositionScreenPoint))
+            {
+                if (isVisible && !animator.enabled)
+                {
+                    PlayAnimation(destructionAnimationNameHash);
+                    isVisible = false;
+                }
+                if (animator.enabled)
+                    RotateAndMove(targetPositionScreenPoint, true);
+            }
+            else if (!isVisible && !animator.enabled)
+            {
+                PlayAnimation(creationAnimationNameHash);
+                isVisible = true;
+            }
+            if (isVisible)
+                RotateAndMove(targetPositionScreenPoint);
         }
-        else
-        {
-            float angle;
-            (targetPositionScreenPoint, angle) = positionAndAngle.Get(targetPositionScreenPoint);
-
-            rectTransformRotation.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
-
-            rectTransformPosition.position = uiCamera.ScreenToWorldPoint(targetPositionScreenPoint);
-            rectTransformPosition.localPosition = (Vector2)rectTransformPosition.localPosition;
-        }
-    }  
-
-    public static bool IsTargetVisible(Vector3 screenPosition, Sides4 screenBounds = null)
+    }
+    public void PlayAnimation(int animationNameHash)
     {
-        if(screenBounds == null)
-            return screenPosition.x > 0 && screenPosition.x < Screen.width &&
-                   screenPosition.y > 0 && screenPosition.y < Screen.height;
+        animator.enabled = true;
+        animator.Play(animationNameHash);
+        StartCoroutine(DeactivateAnimator());
+    }
+    IEnumerator DeactivateAnimator()
+    {
+        yield return new WaitForSeconds(animationLength);
+        animator.enabled = false;
+    }
+
+    bool IsTargetVisible(Vector3 screenPosition)
+    {
         return screenPosition.x > screenBounds.Left && screenPosition.x < Screen.width - screenBounds.Right &&
                screenPosition.y > screenBounds.Down && screenPosition.y < Screen.height - screenBounds.Top;
+    }
+    Vector3 GetTargetPositionScreenPoint() => mainCamera.WorldToScreenPoint(targetPosition);
+    void RotateAndMove(Vector3 targetPositionScreenPoint, bool isTargetVisible = false)
+    {
+        float angle;
+
+        if(isTargetVisible)
+            (_, angle) = positionAndAngle.Get(targetPositionScreenPoint);
+        else
+            (targetPositionScreenPoint, angle) = positionAndAngle.Get(targetPositionScreenPoint);
+
+        rectTransformRotation.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
+
+        rectTransformPosition.position = uiCamera.ScreenToWorldPoint(targetPositionScreenPoint);
+        rectTransformPosition.localPosition = (Vector2)rectTransformPosition.localPosition;
     }
     #endregion
 
