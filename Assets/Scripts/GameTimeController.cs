@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,30 +7,56 @@ using UnityEngine;
 public class GameTimeController : MonoBehaviour
 {
     #region Fields
-    [SerializeField] TextMeshProUGUI gameplayEleapsedTimeTextObj;
-    [SerializeField] TextMeshProUGUI gameoverEleapsedTimeTextObj;
+    [SerializeField] TextMeshProUGUI gameplayElapsedTime;
+    [SerializeField] TextMeshProUGUI gameoverElapsedTime;
+    [SerializeField] TextMeshProUGUI gameoverNewTheBestSurvivalTime;
+    [SerializeField] TextMeshProUGUI theBestSurvivalTime;
 
     Timer timer = new Timer();
     #endregion
 
     #region Methods
-    public void RunTimer()
+    // Start is called before the first frame update
+    void Start()
     {
-        gameplayEleapsedTimeTextObj.gameObject.SetActive(true);
-        timer.Run();
-    }
-    public void StopTimer()
-    {
-        gameplayEleapsedTimeTextObj.gameObject.SetActive(false);
-        timer.Stop();
-        gameoverEleapsedTimeTextObj.text = "You survived " + gameplayEleapsedTimeTextObj.text + ", a good result !";
+        gameoverNewTheBestSurvivalTime.transform.parent.gameObject.SetActive(false);
+        gameoverElapsedTime.transform.parent.gameObject.SetActive(false);
+        if(PlayerPrefs.HasKey("TheBestSurvivalTime"))
+        {
+            theBestSurvivalTime.text = TimeSpan.FromSeconds(PlayerPrefs.GetFloat("TheBestSurvivalTime")).ToString("mm':'ss");
+            theBestSurvivalTime.transform.parent.gameObject.SetActive(true);
+        }
     }
     // Update is called once per frame
     void Update()
     {
         timer.Update();
-        if(timer.Running)
-            gameplayEleapsedTimeTextObj.text = System.TimeSpan.FromSeconds(timer.ElapsedSeconds).ToString("mm':'ss");
+        if (timer.Running)
+            gameplayElapsedTime.text = TimeSpan.FromSeconds(timer.ElapsedSeconds).ToString("mm':'ss");
+    }
+    public void RunTimer()
+    {
+        gameplayElapsedTime.gameObject.SetActive(true);
+        timer.Run();
+    }
+    public void StopTimer()
+    {
+        gameplayElapsedTime.gameObject.SetActive(false);        
+        if(IsNewTheBestSurvivalTime())
+        {
+            SaveTheBestSurvivalTime();
+            DisplayElapsedTime(gameoverNewTheBestSurvivalTime);
+        }
+        else
+            DisplayElapsedTime(gameoverElapsedTime);
+        timer.StopAndReset();
+    }
+    bool IsNewTheBestSurvivalTime() => PlayerPrefs.GetFloat("TheBestSurvivalTime") < (int)timer.ElapsedSeconds;
+    void SaveTheBestSurvivalTime() => PlayerPrefs.SetFloat("TheBestSurvivalTime", timer.ElapsedSeconds);
+    void DisplayElapsedTime(TextMeshProUGUI textMeshPro)
+    {
+        textMeshPro.text = gameplayElapsedTime.text;
+        textMeshPro.transform.parent.gameObject.SetActive(true);
     }
     #endregion
 }
