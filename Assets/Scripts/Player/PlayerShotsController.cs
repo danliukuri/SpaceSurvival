@@ -13,7 +13,7 @@ public class PlayerShotsController : MonoBehaviour
 
     GameObject newProjectile;
     Player playerScript;
-    Timer timer = new Timer();
+    TimerWithDuration timer = new TimerWithDuration();
     Vector3 spawnerPosition = new Vector3();
     #endregion
 
@@ -34,7 +34,7 @@ public class PlayerShotsController : MonoBehaviour
                 spawnerPosition.Set(spw.position.x, 0f, spw.position.z);
                 newProjectile = Instantiate(projectile, spawnerPosition, Quaternion.Euler(0f, player.rotation.eulerAngles.y, 0f));
             });
-            timer.Reset();
+            timer.StopAndReset();
             timer.Run(fireDelta);
         }
     }

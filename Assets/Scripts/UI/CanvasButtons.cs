@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Linq;
 
 public class CanvasButtons : MonoBehaviour
 {
     #region Fields
+    [SerializeField] GameTimeController gameTimeController;
     [SerializeField] GameObject intro;
     [SerializeField] GameObject mainMenu;
     [SerializeField] GameObject gameplayMenu;
@@ -35,12 +35,14 @@ public class CanvasButtons : MonoBehaviour
         Game.Started = true;
         gameplayMenu.SetActive(true);
         Destroy(intro, 3f);
+        gameTimeController.RunTimer();
     }
     public void FinishGameplay()
     {
         Time.timeScale = 0f;
         Game.Started = false;
         gameoverMenu.SetActive(true);
+        gameTimeController.StopTimer();
     }
     public void GoToMainMenu()
     {

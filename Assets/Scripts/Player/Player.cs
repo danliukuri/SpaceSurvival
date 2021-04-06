@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     bool isPossibleToSpawn = true;
     const float spawnRate = 1f;
     StockOfResources stockOfResources;
-    Timer timer = new Timer();
+    TimerWithDuration timer = new TimerWithDuration();
     #endregion
 
     #region Methods
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
             playerUI.UnloadResource(stockOfResources.Resources.Last());
             baseScript.AddResource(stockOfResources.Resources.Last());
             stockOfResources.Remove(stockOfResources.Resources.Last());
-            timer.Reset();
+            timer.StopAndReset();
         }
         else if (Input.GetKey(keyToUnloadResources))
         {
@@ -82,7 +82,7 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKeyUp(keyToUnloadResources))
         {
-            timer.Reset();
+            timer.StopAndReset();
             playerUI.IsResourceUnloadingSliderActive = false;
             playerUI.UpdateResourceUnloadingSlider(timer.Duration, timer.ElapsedSeconds);
         }    
