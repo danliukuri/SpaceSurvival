@@ -1,4 +1,7 @@
-﻿public abstract class Resource
+﻿namespace Resources
 {
-    public abstract int Weight { get; }
+    public abstract class Resource
+    {
+        public abstract int Weight { get; }
+    }
 }

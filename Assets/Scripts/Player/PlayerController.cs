@@ -1,88 +1,92 @@
 ﻿using UnityEngine;
+using Utilities;
 
-public class PlayerController : MonoBehaviour
+namespace Player
 {
-    #region Fields
-    [Header("Parameters")]
-    [SerializeField] float movementSpeed;
-    [SerializeField] float rotationSpeed;
-    [SerializeField] float maxTilt;
-
-    Camera mainCamera;
-    Player playerScript;
-    Rigidbody rgdbody;
-
-    Quaternion previosRotation;
-    Quaternion targetRotation;
-
-    Vector3 mousePosition;
-    Vector3 targetPoint;
-
-    float xRotationController;
-    float zRotationController;
-    float yDefaultPosition;
-    #endregion
-
-    #region Methods
-    // Use this for initialization
-    void Start()
+    public class PlayerController : MonoBehaviour
     {
-        mainCamera = Camera.main;
-        playerScript = GetComponent<Player>();
-        rgdbody = GetComponent<Rigidbody>();
+        #region Fields
+        [Header("Parameters")]
+        [SerializeField] float movementSpeed;
+        [SerializeField] float rotationSpeed;
+        [SerializeField] float maxTilt;
 
-        yDefaultPosition =  playerScript.DefaultYPosition;
-    }
+        Camera mainCamera;
+        Player playerScript;
+        Rigidbody rgdbody;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        rgdbody.isKinematic = true;
-        rgdbody.isKinematic = false;
-    }
+        Quaternion previosRotation;
+        Quaternion targetRotation;
 
-    void FixedUpdate()
-    {
-        mousePosition = Input.mousePosition;
-        mousePosition.z = Vector3.Dot(transform.position - mainCamera.transform.position, mainCamera.transform.forward);
-        targetRotation = GetTargetYRotation(mousePosition);
+        Vector3 mousePosition;
+        Vector3 targetPoint;
 
-        if (Input.GetMouseButton(1) && playerScript.IsActive)
+        float xRotationController;
+        float zRotationController;
+        float yDefaultPosition;
+        #endregion
+
+        #region Methods
+        // Use this for initialization
+        void Start()
         {
-            mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-            mousePosition.y = yDefaultPosition;
-            transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
+            mainCamera = Camera.main;
+            playerScript = GetComponent<Player>();
+            rgdbody = GetComponent<Rigidbody>();
 
-            targetRotation = GetTargetXZRotation();
-            previosRotation = transform.rotation;
+            yDefaultPosition = playerScript.DefaultYPosition;
         }
-        if (playerScript.IsActive)
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            rgdbody.isKinematic = true;
+            rgdbody.isKinematic = false;
+        }
+
+        void FixedUpdate()
+        {
+            mousePosition = Input.mousePosition;
+            mousePosition.z = Vector3.Dot(transform.position - mainCamera.transform.position, mainCamera.transform.forward);
+            targetRotation = GetTargetYRotation(mousePosition);
+
+            if (Input.GetMouseButton(1) && playerScript.IsActive)
+            {
+                mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
+                mousePosition.y = yDefaultPosition;
+                transform.position = Vector3.Lerp(transform.position, mousePosition, movementSpeed * Time.deltaTime);
+
+                targetRotation = GetTargetXZRotation();
+                previosRotation = transform.rotation;
+            }
+            if (playerScript.IsActive)
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+
+        void ChangeRotationTarget(Vector3 mousePosition)
+        {
+            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+            Plane playerPlane = new Plane(Vector3.up, transform.position);
+
+            float hitdist = 0.0f;
+
+            if (playerPlane.Raycast(ray, out hitdist))
+                targetPoint = ray.GetPoint(hitdist);
+        }
+
+        Quaternion GetTargetYRotation(Vector3 mousePosition)
+        {
+            ChangeRotationTarget(mousePosition);
+            return Quaternion.LookRotation(targetPoint - transform.position);
+        }
+        Quaternion GetTargetXZRotation()
+        {
+            xRotationController = (mousePosition - transform.position).magnitude / 10f;
+            zRotationController = ((Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f > 1f) ? 1f :
+                                    Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f);
+
+            return Quaternion.Euler(maxTilt * xRotationController, targetRotation.eulerAngles.y,
+                    (QuaternionExtensions.IsRightRotated(transform.rotation, previosRotation) ? maxTilt : -maxTilt) * zRotationController);
+        }
+        #endregion
     }
-
-    void ChangeRotationTarget(Vector3 mousePosition)
-    {
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-        Plane playerPlane = new Plane(Vector3.up, transform.position);
-
-        float hitdist = 0.0f;
-
-        if (playerPlane.Raycast(ray, out hitdist))
-            targetPoint = ray.GetPoint(hitdist);
-    }
-
-    Quaternion GetTargetYRotation(Vector3 mousePosition)
-    {
-        ChangeRotationTarget(mousePosition);
-        return Quaternion.LookRotation(targetPoint - transform.position);
-    }
-    Quaternion GetTargetXZRotation()
-    {
-        xRotationController = (mousePosition - transform.position).magnitude / 10f;
-        zRotationController = ((Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f > 1f) ? 1f :
-                                Mathf.Abs(transform.rotation.y - previosRotation.y) * 100f);
-
-        return Quaternion.Euler(maxTilt * xRotationController, targetRotation.eulerAngles.y,
-                (QuaternionExtensions.IsRightRotated(transform.rotation, previosRotation) ? maxTilt : -maxTilt) * zRotationController);
-    }
-    #endregion
 }

@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Resources;
+using UI;
 using UnityEngine;
 
 public class Base : MonoBehaviour
@@ -22,19 +22,16 @@ public class Base : MonoBehaviour
     #region Methods
     void Update()
     {
-        if(Game.Started)
+        Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
+        if (Hp <= 0f)
+            canvasButtons.FinishGameplay();
+        else if (PreviousHpValue - Hp >= 1f)
         {
-            Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
-            if (Hp <= 0f)
-                canvasButtons.FinishGameplay();
-            else if (PreviousHpValue - Hp >= 1f)
-            {
-                PreviousHpValue = Mathf.Ceil(Hp);
-                baseUI.InstantiateBarrelConsumptionText();
-            }
-            baseUI.UpdateHpSlider();
-            baseUI.UpdateHpText();
+            PreviousHpValue = Mathf.Ceil(Hp);
+            baseUI.InstantiateBarrelConsumptionText();
         }
+        baseUI.UpdateHpSlider();
+        baseUI.UpdateHpText();
     }
     void Awake()
     {

@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Player;
+using UI;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
 	[SerializeField] Vector3 defaultRotation;
 	[SerializeField] Vector3 rotationCenterOnStart;
 
-	Player playerScript;
+	Player.Player playerScript;
 	Camera mainCamera;
 	Vector3 mousePosition;
 	Quaternion defaultRotationQuaternion;
@@ -26,15 +26,13 @@ public class CameraController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		playerScript = player.GetComponent<Player>();
+		playerScript = player.GetComponent<Player.Player>();
 		mainCamera = GetComponent<Camera>();
 		defaultRotationQuaternion = Quaternion.Euler(defaultRotation);
-
-		Cursor.lockState = CursorLockMode.Confined;
 	}
     void FixedUpdate()
 	{
-		if (Input.GetMouseButton(1) && playerScript.IsActive && Game.Started) // Copy mouse position
+		if (Input.GetMouseButton(1) && playerScript.IsActive && GameHandler.GamePlayStarted) // Copy mouse position
 		{
 			mousePosition = Input.mousePosition;
 			mousePosition.z = Vector3.Dot(player.position - transform.position, transform.forward);
@@ -43,12 +41,12 @@ public class CameraController : MonoBehaviour
 			speedСontroller = Vector3.Distance(mousePosition, transform.position);
 			MoveToPosition(mousePosition + offset, speedСontroller);
 		}
-		else if (!playerScript.IsActive && Game.Started) // Copy player position
+		else if (!playerScript.IsActive && GameHandler.GamePlayStarted) // Copy player position
 		{
 			speedСontroller = Vector3.Distance(transform.position, player.position + offset) + 10f;
 			MoveToPosition(player.position + offset, speedСontroller);
 		}
-		if (isMoveTodefaultposition && !Game.Started) // Move to player position
+		if (isMoveTodefaultposition && !GameHandler.GamePlayStarted) // Move to player position
 		{
 			speedСontroller = Vector3.Distance(transform.position, player.position + offset) + 10f;
 			MoveToPosition(player.position + offset, speedСontroller);
@@ -57,9 +55,9 @@ public class CameraController : MonoBehaviour
 			if (speedСontroller < 0.2f + 10f && Input.GetKeyDown(KeyCode.Space))
 				StartGameplay();
 		}
-		else if (!Game.Started)  // Rotate around the base
+		else if (!GameHandler.GamePlayStarted)  // Rotate around the base
 			transform.RotateAround(rotationCenterOnStart, Vector3.up, rotationSpeed * Time.deltaTime);
-		if (transform.rotation != defaultRotationQuaternion && Game.Started)
+		if (transform.rotation != defaultRotationQuaternion && GameHandler.GamePlayStarted)
 			transform.rotation = Quaternion.Slerp(transform.rotation, defaultRotationQuaternion, 15f / speedСontroller * Time.deltaTime);
 	}
 
@@ -69,7 +67,7 @@ public class CameraController : MonoBehaviour
 		canvasButtons.StartGameplay();
 	}
 	public void MoveToDefaultPosition() => isMoveTodefaultposition = true;
-	void MoveToPosition(Vector3 target, float speedСontroller)
+	void MoveToPosition(in Vector3 target, float speedСontroller)
     {
 		transform.position = Vector3.Lerp(transform.position, target, movementSpeed / speedСontroller * Time.deltaTime);
 	}
