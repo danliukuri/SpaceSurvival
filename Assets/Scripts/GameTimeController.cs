@@ -11,7 +11,7 @@ public class GameTimeController : MonoBehaviour
     [SerializeField] TextMeshProUGUI gameoverNewTheBestSurvivalTime;
     [SerializeField] TextMeshProUGUI theBestSurvivalTime;
 
-    Timer timer = new Timer();
+    public Timer Timer { get; private set; } = new Timer();
     #endregion
 
     #region Methods
@@ -29,14 +29,14 @@ public class GameTimeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer.Update();
-        if (timer.Running)
-            gameplayElapsedTime.text = TimeSpan.FromSeconds(timer.ElapsedSeconds).ToString("mm':'ss");
+        Timer.Update();
+        if (Timer.Running)
+            gameplayElapsedTime.text = TimeSpan.FromSeconds(Timer.ElapsedSeconds).ToString("mm':'ss");
     }
     public void RunTimer()
     {
         gameplayElapsedTime.gameObject.SetActive(true);
-        timer.Run();
+        Timer.Run();
     }
     public void StopTimer()
     {
@@ -48,10 +48,10 @@ public class GameTimeController : MonoBehaviour
         }
         else
             DisplayElapsedTime(gameoverElapsedTime);
-        timer.StopAndReset();
+        Timer.StopAndReset();
     }
-    bool IsNewTheBestSurvivalTime() => PlayerPrefs.GetFloat("TheBestSurvivalTime") < (int)timer.ElapsedSeconds;
-    void SaveTheBestSurvivalTime() => PlayerPrefs.SetFloat("TheBestSurvivalTime", timer.ElapsedSeconds);
+    bool IsNewTheBestSurvivalTime() => PlayerPrefs.GetFloat("TheBestSurvivalTime") < (int)Timer.ElapsedSeconds;
+    void SaveTheBestSurvivalTime() => PlayerPrefs.SetFloat("TheBestSurvivalTime", Timer.ElapsedSeconds);
     void DisplayElapsedTime(TextMeshProUGUI textMeshPro)
     {
         textMeshPro.text = gameplayElapsedTime.text;

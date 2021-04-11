@@ -15,6 +15,7 @@ public class Base : MonoBehaviour
     [SerializeField] int maxWeight;
     [SerializeField] BaseUI baseUI;
     [SerializeField] CanvasButtons canvasButtons;
+    [SerializeField] GameTimeController gameTimeController;
 
     StockOfResources stockOfResources;
     #endregion
@@ -22,7 +23,8 @@ public class Base : MonoBehaviour
     #region Methods
     void Update()
     {
-        Hp -= destructionCurve.Evaluate(Time.time / 1000f) + destructionRate;
+        print(destructionCurve.Evaluate(gameTimeController.Timer.ElapsedSeconds / 2000f) + destructionRate);
+        Hp -= destructionCurve.Evaluate(gameTimeController.Timer.ElapsedSeconds / 2000f) + destructionRate;
         if (Hp <= 0f)
             canvasButtons.FinishGameplay();
         else if (PreviousHpValue - Hp >= 1f)
