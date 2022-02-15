@@ -23,7 +23,6 @@ public class Base : MonoBehaviour
     #region Methods
     void Update()
     {
-        print(destructionCurve.Evaluate(gameTimeController.Timer.ElapsedSeconds / 2000f) + destructionRate);
         Hp -= destructionCurve.Evaluate(gameTimeController.Timer.ElapsedSeconds / 2000f) + destructionRate;
         if (Hp <= 0f)
             canvasButtons.FinishGameplay();
